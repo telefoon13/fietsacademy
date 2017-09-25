@@ -8,10 +8,19 @@
 <persistence-unit name="fietsacademy">
     <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
     <non-jta-data-source>java:/comp/env/jdbc/fietsacademy</non-jta-data-source>
+    <class>be.vdab.entities.DocentenEntity</class>
     <properties>
         <property name="hibernate.show_sql" value="true"/>
         <property name="hibernate.format.sql" value="true"/>
         <property name="hibernate.use_sql_comments" value="true"/>
+        <property name="toplink.jdbc.url" value="jdbc:mysql://localhost:3306/fietsacademy"/>
+        <property name="toplink.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+        <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/fietsacademy"/>
+        <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>
+        <property name="openjpa.ConnectionURL" value="jdbc:mysql://localhost:3306/fietsacademy"/>
+        <property name="openjpa.ConnectionDriverName" value="com.mysql.jdbc.Driver"/>
+        <property name="eclipselink.jdbc.url" value="jdbc:mysql://localhost:3306/fietsacademy"/>
+        <property name="eclipselink.jdbc.driver" value="com.mysql.jdbc.Driver"/>
     </properties>
 </persistence-unit>
 </persistence>
