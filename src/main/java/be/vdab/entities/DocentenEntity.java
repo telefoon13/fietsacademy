@@ -1,5 +1,7 @@
 package be.vdab.entities;
 
+import be.vdab.enums.Geslacht;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -14,6 +16,7 @@ public class DocentenEntity implements Serializable {
 	private String familienaam;
 	private BigDecimal wedde;
 	private long rijksRegisterNr;
+	private Geslacht geslacht;
 
 	@Id
 	@Column(name = "id")
@@ -64,6 +67,17 @@ public class DocentenEntity implements Serializable {
 
 	public void setRijksRegisterNr(long rijksRegisterNr) {
 		this.rijksRegisterNr = rijksRegisterNr;
+	}
+
+	@Basic
+	@Column(name = "geslacht")
+	@Enumerated(EnumType.STRING)
+	public Geslacht getGeslacht() {
+		return geslacht;
+	}
+
+	public void setGeslacht(Geslacht geslacht) {
+		this.geslacht = geslacht;
 	}
 
 	@Override

@@ -21,6 +21,7 @@
     Docent niet gevonden
 </c:if>
 <c:if test='${not empty docent}'>
+    ${docent.geslacht == 'MAN' ? '&#x2642;' : '&#x2640;'}
     ${docent.familienaam} ${docent.voornaam}, wedde: &euro; <fmt:formatNumber value='${docent.wedde}'/>
 </c:if>
 </body>
