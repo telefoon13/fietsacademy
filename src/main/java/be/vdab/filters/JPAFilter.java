@@ -27,4 +27,8 @@ public class JPAFilter implements Filter {
 	public void destroy() {
 		entityManagerFactory.close();
 	}
+
+	public static EntityManager getEntityManager(){
+		return entityManagerFactory.createEntityManager();
+	}
 }

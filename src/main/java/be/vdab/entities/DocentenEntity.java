@@ -5,11 +5,11 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "docenten", schema = "fietsacademy", catalog = "")
+@Table(name = "docenten", schema = "fietsacademy")
 public class DocentenEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private int id;
+	private long id;
 	private String voornaam;
 	private String familienaam;
 	private BigDecimal wedde;
@@ -18,11 +18,11 @@ public class DocentenEntity implements Serializable {
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -84,7 +84,7 @@ public class DocentenEntity implements Serializable {
 
 	@Override
 	public int hashCode() {
-		int result = id;
+		int result = (int) id;
 		result = 31 * result + (voornaam != null ? voornaam.hashCode() : 0);
 		result = 31 * result + (familienaam != null ? familienaam.hashCode() : 0);
 		result = 31 * result + (wedde != null ? wedde.hashCode() : 0);
