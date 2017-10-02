@@ -18,6 +18,17 @@ public class DocentenEntity implements Serializable {
 	private long rijksRegisterNr;
 	private Geslacht geslacht;
 
+
+	public DocentenEntity(String voornaam, String familienaam, BigDecimal wedde,Geslacht geslacht, long rijksRegisterNr) {
+		setVoornaam(voornaam);
+		setFamilienaam(familienaam);
+		setWedde(wedde);
+		setGeslacht(geslacht);
+		setRijksRegisterNr(rijksRegisterNr);
+	}
+	protected DocentenEntity() {}// default constructor is vereiste voor JPA
+
+
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,6 +47,9 @@ public class DocentenEntity implements Serializable {
 	}
 
 	public void setVoornaam(String voornaam) {
+		if ( ! isVoornaamValid(voornaam)) {
+			throw new IllegalArgumentException();
+		}
 		this.voornaam = voornaam;
 	}
 
@@ -46,6 +60,9 @@ public class DocentenEntity implements Serializable {
 	}
 
 	public void setFamilienaam(String familienaam) {
+		if ( ! isFamilienaamValid(familienaam)) {
+			throw new IllegalArgumentException();
+		}
 		this.familienaam = familienaam;
 	}
 
@@ -56,6 +73,9 @@ public class DocentenEntity implements Serializable {
 	}
 
 	public void setWedde(BigDecimal wedde) {
+		if ( ! isWeddeValid(wedde)) {
+			throw new IllegalArgumentException();
+		}
 		this.wedde = wedde;
 	}
 
@@ -66,6 +86,9 @@ public class DocentenEntity implements Serializable {
 	}
 
 	public void setRijksRegisterNr(long rijksRegisterNr) {
+		if ( ! isRijksRegisterNrValid(rijksRegisterNr)) {
+			throw new IllegalArgumentException();
+		}
 		this.rijksRegisterNr = rijksRegisterNr;
 	}
 
@@ -79,6 +102,28 @@ public class DocentenEntity implements Serializable {
 	public void setGeslacht(Geslacht geslacht) {
 		this.geslacht = geslacht;
 	}
+
+
+	public static boolean isVoornaamValid(String voornaam) {
+		return voornaam != null && ! voornaam.isEmpty();
+	}
+
+	public static boolean isFamilienaamValid(String familienaam) {
+		return familienaam != null && ! familienaam.isEmpty();
+	}
+
+	public static boolean isWeddeValid(BigDecimal wedde) {
+		return wedde != null && wedde.compareTo(BigDecimal.ZERO) >= 0;
+	}
+
+	public static boolean isRijksRegisterNrValid(long rijksRegisterNr) {
+		long getal = rijksRegisterNr / 100;
+		if (rijksRegisterNr / 1_000_000_000 < 50) {
+			getal += 2_000_000_000;
+		}
+		return rijksRegisterNr % 100 == 97 - getal % 97;
+	}
+
 
 	@Override
 	public boolean equals(Object o) {

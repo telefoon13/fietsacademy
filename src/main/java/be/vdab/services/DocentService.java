@@ -18,4 +18,15 @@ public class DocentService {
 			entityManager.close();
 		}
 	}
+
+	public void create(DocentenEntity docent){
+		EntityManager entityManager = JPAFilter.getEntityManager();
+		entityManager.getTransaction().begin();
+		try {
+			docentRepository.create(docent,entityManager);
+			entityManager.getTransaction().commit();
+		} catch (RuntimeException ex){
+			entityManager.getTransaction().rollback();
+		}
+	}
 }

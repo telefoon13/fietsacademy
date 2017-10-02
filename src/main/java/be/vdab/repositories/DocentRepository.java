@@ -12,5 +12,7 @@ public class DocentRepository {
 			return Optional.ofNullable(entityManager.find(DocentenEntity.class, id));
 	}
 
-//	public void create()
+	public void create(DocentenEntity docent, EntityManager entityManager){
+		entityManager.persist(docent);
+	}
 }
