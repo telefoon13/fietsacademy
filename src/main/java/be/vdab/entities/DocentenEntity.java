@@ -5,6 +5,7 @@ import be.vdab.enums.Geslacht;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 @Entity
 @Table(name = "docenten", schema = "fietsacademy")
@@ -122,6 +123,11 @@ public class DocentenEntity implements Serializable {
 			getal += 2_000_000_000;
 		}
 		return rijksRegisterNr % 100 == 97 - getal % 97;
+	}
+
+	public void opslag(BigDecimal percentage){
+		BigDecimal factor = BigDecimal.ONE.add(percentage.divide(BigDecimal.valueOf(100)));
+		wedde = wedde.multiply(factor).setScale(2, RoundingMode.HALF_UP);
 	}
 
 
