@@ -19,7 +19,6 @@ public class DocentenEntity implements Serializable {
 	private long rijksRegisterNr;
 	private Geslacht geslacht;
 
-
 	public DocentenEntity(String voornaam, String familienaam, BigDecimal wedde,Geslacht geslacht, long rijksRegisterNr) {
 		setVoornaam(voornaam);
 		setFamilienaam(familienaam);

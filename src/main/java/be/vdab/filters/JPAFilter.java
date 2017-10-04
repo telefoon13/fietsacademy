@@ -7,7 +7,7 @@ import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import java.io.IOException;
 
-@WebFilter("*.htm")
+@WebFilter(value = "*.htm", filterName = "JPAFilter")
 public class JPAFilter implements Filter {
 
 	private static final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("fietsacademy");

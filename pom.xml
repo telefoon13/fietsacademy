@@ -32,9 +32,9 @@
             <version>1.2</version>
         </dependency>
         <dependency> <!-- Hibernate implementatie van JPA -->
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core</artifactId>
-            <version>[5.2.1, 5.2.99]</version>
-        </dependency>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-core</artifactId>
+        <version>[5.2.1, 5.2.99]</version>
+    </dependency>
     </dependencies>
 </project>
