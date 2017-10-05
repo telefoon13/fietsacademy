@@ -43,4 +43,8 @@ public class DocentRepository extends AbstractRepository {
 	public List<AantalDocentenPerWedde> findAantalDocentenPerWedde(){
 		return getEntityManager().createQuery("SELECT new be.vdab.valueobjects.AantalDocentenPerWedde(d.wedde,COUNT(d)) FROM DocentenEntity d GROUP BY d.wedde",AantalDocentenPerWedde.class).getResultList();
 	}
+
+	public void algemeneOpslag(BigDecimal factor){
+		getEntityManager().createNamedQuery("DocentenEntity.algemeneOpslag").setParameter("factor", factor).executeUpdate();
+	}
 }

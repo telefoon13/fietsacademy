@@ -1,12 +1,10 @@
 package be.vdab.services;
 
 import be.vdab.entities.DocentenEntity;
-import be.vdab.filters.JPAFilter;
 import be.vdab.repositories.DocentRepository;
 import be.vdab.valueobjects.AantalDocentenPerWedde;
 import be.vdab.valueobjects.VoornaamEnID;
 
-import javax.persistence.EntityManager;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
@@ -65,5 +63,17 @@ public class DocentService extends AbstractService {
 
 	public List<AantalDocentenPerWedde> findAantalDocentenPerWedde(){
 		return docentRepository.findAantalDocentenPerWedde();
+	}
+
+	public void algemeneOpslag(BigDecimal percentage){
+		BigDecimal factor = BigDecimal.ONE.add(percentage.divide(BigDecimal.valueOf(100)));
+		beginTransaction();
+		try{
+			docentRepository.algemeneOpslag(factor);
+			commit();
+		} catch (RuntimeException ex){
+			rollback();
+			throw ex;
+		}
 	}
 }

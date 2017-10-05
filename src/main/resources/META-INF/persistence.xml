@@ -9,6 +9,9 @@
     <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
     <non-jta-data-source>java:/comp/env/jdbc/fietsacademy</non-jta-data-source>
     <class>be.vdab.entities.DocentenEntity</class>
+    <class>be.vdab.entities.CursusEntity</class>
+    <class>be.vdab.entities.GroepsCursusEntity</class>
+    <class>be.vdab.entities.IndividueleCursusEntity</class>
     <properties>
         <property name="hibernate.show_sql" value="true"/>
         <property name="hibernate.format.sql" value="true"/>
