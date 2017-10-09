@@ -23,4 +23,17 @@
             ORDER BY c.naam
         </query>
     </named-query>
+    <named-query name="CampussenEntity.findByGemeente">
+        <query>
+            SELECT c FROM CampussenEntity c
+            WHERE c.adres.gemeente LIKE :gemeente
+            ORDER BY c.naam
+        </query>
+    </named-query>
+    <named-query name="CampussenEntity.findAll">
+        <query>
+            SELECT c FROM CampussenEntity c
+            ORDER BY c.naam
+        </query>
+    </named-query>
 </entity-mappings>

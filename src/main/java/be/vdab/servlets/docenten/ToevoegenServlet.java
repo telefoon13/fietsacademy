@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 @WebServlet(name = "ToevoegenServlet", urlPatterns = "/docenten/toevoegen.htm")
@@ -63,7 +64,7 @@ public class ToevoegenServlet extends HttpServlet {
 		}
 
 		if (fouten.isEmpty()) {
-			DocentenEntity docent = new DocentenEntity(voornaam, familienaam, wedde, Geslacht.valueOf(geslacht), rijksRegisterNr);
+			DocentenEntity docent = new DocentenEntity(voornaam, familienaam, wedde, Geslacht.valueOf(geslacht), rijksRegisterNr,new HashSet<>());
 			docentService.create(docent);
 			response.sendRedirect(response.encodeRedirectURL(String.format(REDIRECT_URL, request.getContextPath(), docent.getId())));
 		} else {

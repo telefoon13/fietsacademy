@@ -6,6 +6,7 @@ import be.vdab.valueobjects.AantalDocentenPerWedde;
 import be.vdab.valueobjects.VoornaamEnID;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -72,6 +73,28 @@ public class DocentService extends AbstractService {
 			docentRepository.algemeneOpslag(factor);
 			commit();
 		} catch (RuntimeException ex){
+			rollback();
+			throw ex;
+		}
+	}
+
+	public void bijnaamToevoegen(long id, String bijnaam){
+		beginTransaction();
+		try {
+			docentRepository.read(id).ifPresent(docentenEntity -> docentenEntity.addBijnaam(bijnaam));
+			commit();
+		} catch (RuntimeException ex){
+			rollback();
+			throw ex;
+		}
+	}
+
+	public void bijnamenVerwijderen(long id, String[] bijnamen) {
+		beginTransaction();
+		try {
+			docentRepository.read(id).ifPresent(docent -> Arrays.stream(bijnamen).forEach(bijnaam->docent.removeBijnaam(bijnaam)));
+			commit();
+		} catch (RuntimeException ex) {
 			rollback();
 			throw ex;
 		}

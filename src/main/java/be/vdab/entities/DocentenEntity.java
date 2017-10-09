@@ -6,6 +6,9 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "docenten", schema = "fietsacademy")
@@ -18,14 +21,17 @@ public class DocentenEntity implements Serializable {
 	private BigDecimal wedde;
 	private long rijksRegisterNr;
 	private Geslacht geslacht;
+	private Set<String> bijnamen;
 
-	public DocentenEntity(String voornaam, String familienaam, BigDecimal wedde,Geslacht geslacht, long rijksRegisterNr) {
+	public DocentenEntity(String voornaam, String familienaam, BigDecimal wedde,Geslacht geslacht, long rijksRegisterNr,Set<String> bijnamen) {
 		setVoornaam(voornaam);
 		setFamilienaam(familienaam);
 		setWedde(wedde);
 		setGeslacht(geslacht);
 		setRijksRegisterNr(rijksRegisterNr);
+		bijnamen = new HashSet<>();
 	}
+
 	protected DocentenEntity() {}// default constructor is vereiste voor JPA
 
 
@@ -103,6 +109,16 @@ public class DocentenEntity implements Serializable {
 		this.geslacht = geslacht;
 	}
 
+	@ElementCollection
+	@CollectionTable(name = "docentenbijnamen", joinColumns = @JoinColumn(name = "docentid"))
+	@Column(name = "bijnaam")
+	public Set<String> getBijnamen() {
+		return Collections.unmodifiableSet(bijnamen);
+	}
+
+	public void setBijnamen(Set<String> bijnamen) {
+		this.bijnamen = bijnamen;
+	}
 
 	public static boolean isVoornaamValid(String voornaam) {
 		return voornaam != null && ! voornaam.isEmpty();
@@ -129,6 +145,13 @@ public class DocentenEntity implements Serializable {
 		wedde = wedde.multiply(factor).setScale(2, RoundingMode.HALF_UP);
 	}
 
+	public void addBijnaam(String bijnaam){
+		bijnamen.add(bijnaam);
+	}
+
+	public void removeBijnaam(String bijnaam){
+		bijnamen.remove(bijnaam);
+	}
 
 	@Override
 	public boolean equals(Object o) {
