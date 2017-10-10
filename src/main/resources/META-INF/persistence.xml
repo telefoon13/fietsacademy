@@ -16,6 +16,8 @@
     <class>be.vdab.valueobjects.Adres</class>
     <class>be.vdab.entities.CampussenEntity</class>
     <class>be.vdab.valueobjects.Campussentelefoonnrs</class>
+    <class>be.vdab.entities.VerantwoordelijkhedenEntity</class>
+    <class>be.vdab.entities.ManagersEntity</class>
     <properties>
         <property name="hibernate.show_sql" value="true"/>
         <property name="hibernate.format.sql" value="true"/>

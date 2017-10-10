@@ -18,13 +18,15 @@ public class CampussenEntity implements Serializable {
 	private Adres adres;
 	private Set<Campussentelefoonnrs> campussentelefoonnrs;
 	private Set<DocentenEntity> docenten;
+	private ManagersEntity manager;
 
-	public CampussenEntity(int id, String naam, Adres adres) {
+	public CampussenEntity(int id, String naam, Adres adres, ManagersEntity manager) {
 		this.id = id;
 		this.naam = naam;
 		this.adres = adres;
 		campussentelefoonnrs = new LinkedHashSet<>();
-		docenten =new LinkedHashSet<>();
+		docenten = new LinkedHashSet<>();
+		this.manager = manager;
 	}
 
 	public CampussenEntity() {
@@ -71,6 +73,14 @@ public class CampussenEntity implements Serializable {
 		this.campussentelefoonnrs = campussentelefoonnrs;
 	}
 
+	public void addCampussentelefoonnr(Campussentelefoonnrs nummer){
+		campussentelefoonnrs.add(nummer);
+	}
+
+	public void removeCampussentelefoonnr(Campussentelefoonnrs nummer){
+		campussentelefoonnrs.remove(nummer);
+	}
+
 	@OneToMany(mappedBy = "campus")
 	@OrderBy("voornaam, familienaam")
 	public Set<DocentenEntity> getDocenten() {
@@ -96,12 +106,14 @@ public class CampussenEntity implements Serializable {
 		}
 	}
 
-	public void addCampussentelefoonnr(Campussentelefoonnrs nummer){
-		campussentelefoonnrs.add(nummer);
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "managerid")
+	public ManagersEntity getManager() {
+		return manager;
 	}
 
-	public void removeCampussentelefoonnr(Campussentelefoonnrs nummer){
-		campussentelefoonnrs.remove(nummer);
+	public void setManager(ManagersEntity manager) {
+		this.manager = manager;
 	}
 
 	@Override

@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
@@ -23,6 +24,7 @@ public class DocentenEntity implements Serializable {
 	private Geslacht geslacht;
 	private Set<String> bijnamen;
 	private CampussenEntity campus;
+	private Set<VerantwoordelijkhedenEntity> verantwoordelijkheden = new LinkedHashSet<>();
 
 	public DocentenEntity(String voornaam, String familienaam, BigDecimal wedde,Geslacht geslacht, long rijksRegisterNr) {
 		setVoornaam(voornaam);
@@ -137,6 +139,28 @@ public class DocentenEntity implements Serializable {
 		}
 	}
 
+	@ManyToMany(mappedBy = "docenten")
+	public Set<VerantwoordelijkhedenEntity> getVerantwoordelijkheden() {
+		return verantwoordelijkheden;
+	}
+
+	public void setVerantwoordelijkheden(Set<VerantwoordelijkhedenEntity> verantwoordelijkheden) {
+		this.verantwoordelijkheden = verantwoordelijkheden;
+	}
+
+	public void add(VerantwoordelijkhedenEntity verantwoordelijkheid){
+		verantwoordelijkheden.add(verantwoordelijkheid);
+		if (!verantwoordelijkheid.getDocenten().contains(this)){
+			verantwoordelijkheid.add(this);
+		}
+	}
+
+	public void remove(VerantwoordelijkhedenEntity verantwoordelijkheid){
+		verantwoordelijkheden.remove(verantwoordelijkheid);
+		if (verantwoordelijkheid.getDocenten().contains(this)){
+			verantwoordelijkheid.remove(this);
+		}
+	}
 
 	public static boolean isVoornaamValid(String voornaam) {
 		return voornaam != null && ! voornaam.isEmpty();
