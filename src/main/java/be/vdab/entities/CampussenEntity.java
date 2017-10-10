@@ -5,7 +5,6 @@ import be.vdab.valueobjects.Campussentelefoonnrs;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -14,16 +13,18 @@ import java.util.Set;
 public class CampussenEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private int id;
+	private long id;
 	private String naam;
 	private Adres adres;
 	private Set<Campussentelefoonnrs> campussentelefoonnrs;
+	private Set<DocentenEntity> docenten;
 
-	public CampussenEntity(int id, String naam, Adres adres, Set<Campussentelefoonnrs> campussentelefoonnrs) {
+	public CampussenEntity(int id, String naam, Adres adres) {
 		this.id = id;
 		this.naam = naam;
 		this.adres = adres;
 		campussentelefoonnrs = new LinkedHashSet<>();
+		docenten =new LinkedHashSet<>();
 	}
 
 	public CampussenEntity() {
@@ -32,11 +33,11 @@ public class CampussenEntity implements Serializable {
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -63,11 +64,36 @@ public class CampussenEntity implements Serializable {
 	@CollectionTable(name = "campussenTelefoonnrs", joinColumns = @JoinColumn(name = "campusid"))
 	@OrderBy("fax")
 	public Set<Campussentelefoonnrs> getCampussentelefoonnrs() {
-		return Collections.unmodifiableSet(campussentelefoonnrs);
+		return campussentelefoonnrs;
 	}
 
 	public void setCampussentelefoonnrs(Set<Campussentelefoonnrs> campussentelefoonnrs) {
 		this.campussentelefoonnrs = campussentelefoonnrs;
+	}
+
+	@OneToMany(mappedBy = "campus")
+	@OrderBy("voornaam, familienaam")
+	public Set<DocentenEntity> getDocenten() {
+		return docenten;
+	}
+
+	public void setDocenten(Set<DocentenEntity> docent) {
+		this.docenten = docent;
+	}
+
+
+	public void addDocenten(DocentenEntity docentA){
+		docenten.add(docentA);
+		if (docentA.getCampus() != this){
+			docentA.setCampus(this);
+		}
+	}
+
+	public void removeDocenten(DocentenEntity docentA){
+		docenten.remove(docentA);
+		if (docentA.getCampus() == this){
+			docentA.setCampus(null);
+		}
 	}
 
 	public void addCampussentelefoonnr(Campussentelefoonnrs nummer){
@@ -93,7 +119,7 @@ public class CampussenEntity implements Serializable {
 
 	@Override
 	public int hashCode() {
-		int result = id;
+		int result = (int) id;
 		result = 31 * result + (naam != null ? naam.hashCode() : 0);
 		return result;
 	}

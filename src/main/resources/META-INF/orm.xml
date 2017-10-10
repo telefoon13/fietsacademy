@@ -3,6 +3,7 @@
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm
     http://java.sun.com/xml/ns/persistence/orm_2_1.xsd">
+
     <named-query name='DocentenEntity.findByWeddeBetween'>
         <query>
             select d from DocentenEntity d
@@ -16,6 +17,13 @@
             SET d.wedde = d.wedde * :factor
         </query>
     </named-query>
+    <named-query name="DocentenEntity.findByRijksRegisterNr">
+        <query>
+            SELECT d FROM DocentenEntity d
+            WHERE d.rijksRegisterNr = :rijksRegisterNr
+        </query>
+    </named-query>
+
     <named-query name="Cursus.findByNaamContains">
         <query>
             SELECT c FROM CursusEntity c
@@ -23,6 +31,7 @@
             ORDER BY c.naam
         </query>
     </named-query>
+
     <named-query name="CampussenEntity.findByGemeente">
         <query>
             SELECT c FROM CampussenEntity c
@@ -36,4 +45,5 @@
             ORDER BY c.naam
         </query>
     </named-query>
+
 </entity-mappings>

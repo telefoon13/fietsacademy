@@ -22,8 +22,9 @@ public class DocentenEntity implements Serializable {
 	private long rijksRegisterNr;
 	private Geslacht geslacht;
 	private Set<String> bijnamen;
+	private CampussenEntity campus;
 
-	public DocentenEntity(String voornaam, String familienaam, BigDecimal wedde,Geslacht geslacht, long rijksRegisterNr,Set<String> bijnamen) {
+	public DocentenEntity(String voornaam, String familienaam, BigDecimal wedde,Geslacht geslacht, long rijksRegisterNr) {
 		setVoornaam(voornaam);
 		setFamilienaam(familienaam);
 		setWedde(wedde);
@@ -113,12 +114,29 @@ public class DocentenEntity implements Serializable {
 	@CollectionTable(name = "docentenbijnamen", joinColumns = @JoinColumn(name = "docentid"))
 	@Column(name = "bijnaam")
 	public Set<String> getBijnamen() {
-		return Collections.unmodifiableSet(bijnamen);
+		return bijnamen;
 	}
 
 	public void setBijnamen(Set<String> bijnamen) {
 		this.bijnamen = bijnamen;
 	}
+
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "campusid")
+	public CampussenEntity getCampus() {
+		return campus;
+	}
+
+	public void setCampus(CampussenEntity campus) {
+		if (this.campus != null && this.campus.getDocenten().contains(this)) {
+			this.campus.removeDocenten(this);
+		}
+		this.campus = campus;
+		if (campus != null && ! campus.getDocenten().contains(this)) {
+			campus.addDocenten(this);
+		}
+	}
+
 
 	public static boolean isVoornaamValid(String voornaam) {
 		return voornaam != null && ! voornaam.isEmpty();
@@ -162,9 +180,6 @@ public class DocentenEntity implements Serializable {
 
 		if (id != that.id) return false;
 		if (rijksRegisterNr != that.rijksRegisterNr) return false;
-		if (voornaam != null ? !voornaam.equals(that.voornaam) : that.voornaam != null) return false;
-		if (familienaam != null ? !familienaam.equals(that.familienaam) : that.familienaam != null) return false;
-		if (wedde != null ? !wedde.equals(that.wedde) : that.wedde != null) return false;
 
 		return true;
 	}

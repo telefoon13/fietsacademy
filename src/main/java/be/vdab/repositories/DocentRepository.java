@@ -4,6 +4,7 @@ import be.vdab.entities.DocentenEntity;
 import be.vdab.valueobjects.AantalDocentenPerWedde;
 import be.vdab.valueobjects.VoornaamEnID;
 
+import javax.persistence.NoResultException;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
@@ -46,5 +47,17 @@ public class DocentRepository extends AbstractRepository {
 
 	public void algemeneOpslag(BigDecimal factor){
 		getEntityManager().createNamedQuery("DocentenEntity.algemeneOpslag").setParameter("factor", factor).executeUpdate();
+	}
+
+	public Optional<DocentenEntity> findByRijksRegisterNr(long rijksRegisterNr){
+		try{
+			return Optional
+					.of(getEntityManager()
+					.createNamedQuery("DocentenEntity.findByRijksRegisterNr", DocentenEntity.class)
+					.setParameter("rijksRegisterNr", rijksRegisterNr)
+					.getSingleResult());
+		} catch (NoResultException ex){
+			return Optional.empty();
+		}
 	}
 }
