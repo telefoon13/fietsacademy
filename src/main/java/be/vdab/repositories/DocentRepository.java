@@ -1,5 +1,6 @@
 package be.vdab.repositories;
 
+import be.vdab.entities.CampussenEntity;
 import be.vdab.entities.DocentenEntity;
 import be.vdab.valueobjects.AantalDocentenPerWedde;
 import be.vdab.valueobjects.VoornaamEnID;
@@ -30,6 +31,7 @@ public class DocentRepository extends AbstractRepository {
 				.setParameter("tot",tot)
 				.setFirstResult(vanafRij)
 				.setMaxResults(aantalRijen)
+				.setHint("javax.persistence.loadgraph", getEntityManager().createEntityGraph(DocentenEntity.MET_CAMPUS))
 				.getResultList();
 	}
 
@@ -59,5 +61,12 @@ public class DocentRepository extends AbstractRepository {
 		} catch (NoResultException ex){
 			return Optional.empty();
 		}
+	}
+
+	public List<DocentenEntity> findBestBetaaldeVanEenCampus(CampussenEntity campus){
+		return getEntityManager()
+				.createNamedQuery("DocentenEntity.findBestBetaaldeVanEenCampus",DocentenEntity.class)
+				.setParameter("campus",campus)
+				.getResultList();
 	}
 }

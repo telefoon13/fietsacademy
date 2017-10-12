@@ -16,6 +16,7 @@ public class CampusDocentServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String VIEW = "/WEB-INF/JSP/campussen/docenten.jsp";
 	private final transient CampusService campusService = new CampusService();
+	private final transient DocentService docentService = new DocentService();
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -25,6 +26,11 @@ public class CampusDocentServlet extends HttpServlet {
 
 		request.setAttribute("campussen", campusService.findAll());
 		String id = request.getParameter("id");
+
+		if (request.getParameter("bestbetaalde") != null){
+			request.setAttribute("docenten", docentService.findBestBetaaldeVanEenCampus(Long.parseLong(id)));
+		}
+
 		if (id != null){
 			campusService.read(Long.parseLong(id)).ifPresent(campussenEntity -> request.setAttribute("campus",campussenEntity));
 		}

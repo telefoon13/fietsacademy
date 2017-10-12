@@ -6,9 +6,9 @@
 
     <named-query name='DocentenEntity.findByWeddeBetween'>
         <query>
-            select d from DocentenEntity d
-            where d.wedde between :van and :tot
-            order by d.wedde, d.id
+            SELECT d FROM DocentenEntity d
+            WHERE d.wedde BETWEEN :van AND :tot
+            ORDER BY d.wedde, d.id
         </query>
     </named-query>
     <named-query name="DocentenEntity.algemeneOpslag">
@@ -21,6 +21,14 @@
         <query>
             SELECT d FROM DocentenEntity d
             WHERE d.rijksRegisterNr = :rijksRegisterNr
+        </query>
+    </named-query>
+    <named-query name="DocentenEntity.findBestBetaaldeVanEenCampus">
+        <query>
+            SELECT d FROM DocentenEntity d
+            WHERE d.campus = :campus AND d.wedde =
+            (SELECT MAX(dd.wedde)FROM DocentenEntity dd
+            WHERE dd.campus = :campus)
         </query>
     </named-query>
 

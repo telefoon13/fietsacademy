@@ -13,6 +13,8 @@ import java.util.Set;
 
 @Entity
 @Table(name = "docenten", schema = "fietsacademy")
+@NamedEntityGraph(name = DocentenEntity.MET_CAMPUS, attributeNodes = @NamedAttributeNode("campus"))
+//@NamedEntityGraph(name = "Docent.metCampusEnVerantwoordelijkheden", attributeNodes = {@NamedAttributeNode("campus"), @NamedAttributeNode("verantwoordelijkheden")})
 public class DocentenEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -25,6 +27,7 @@ public class DocentenEntity implements Serializable {
 	private Set<String> bijnamen;
 	private CampussenEntity campus;
 	private Set<VerantwoordelijkhedenEntity> verantwoordelijkheden = new LinkedHashSet<>();
+	public static final String MET_CAMPUS = "Docent.metCampus";
 
 	public DocentenEntity(String voornaam, String familienaam, BigDecimal wedde,Geslacht geslacht, long rijksRegisterNr) {
 		setVoornaam(voornaam);
@@ -130,13 +133,7 @@ public class DocentenEntity implements Serializable {
 	}
 
 	public void setCampus(CampussenEntity campus) {
-		if (this.campus != null && this.campus.getDocenten().contains(this)) {
-			this.campus.removeDocenten(this);
-		}
 		this.campus = campus;
-		if (campus != null && ! campus.getDocenten().contains(this)) {
-			campus.addDocenten(this);
-		}
 	}
 
 	@ManyToMany(mappedBy = "docenten")
