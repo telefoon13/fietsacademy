@@ -1,5 +1,6 @@
 package be.vdab.servlets.docenten;
 
+import be.vdab.exceptions.RecordAangepastException;
 import be.vdab.services.DocentService;
 
 import javax.servlet.ServletException;
@@ -25,17 +26,27 @@ public class OpslagServlet extends HttpServlet {
 		Map<String, String> fouten = new HashMap<>();
 
 		try{
+
 			BigDecimal percentage = new BigDecimal(request.getParameter("percantage"));
 			if (percentage.compareTo(BigDecimal.ZERO) <= 0){
 				fouten.put("percantage", "Kies een positief getal aub.");
-			} else {
-				long id = Long.parseLong(request.getParameter("id"));
-				docentService.opslag(id, percentage);
-				response.sendRedirect(response.encodeRedirectURL(String.format(REDIRECT_URL, request.getContextPath())));
 			}
+
+			if (fouten.isEmpty()){
+				long id = Long.parseLong(request.getParameter("id"));
+				try{
+					docentService.opslag(id, percentage);
+					response.sendRedirect(response.encodeRedirectURL(String.format(REDIRECT_URL, request.getContextPath())));
+				} catch (RecordAangepastException ex){
+					fouten.put("percentage", "Een andere gebruiker geef reeds iets gewijzig in deze SQL tabel");
+				}
+			}
+
+
 		} catch (NumberFormatException ex){
 			fouten.put("percentage", "Alleen nummers !");
 		}
+
 
 		if (!fouten.isEmpty()){
 			request.setAttribute("fouten", fouten);

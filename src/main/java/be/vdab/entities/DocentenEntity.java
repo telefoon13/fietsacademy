@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -27,6 +28,8 @@ public class DocentenEntity implements Serializable {
 	private Set<String> bijnamen;
 	private CampussenEntity campus;
 	private Set<VerantwoordelijkhedenEntity> verantwoordelijkheden = new LinkedHashSet<>();
+	private Timestamp versie;
+
 	public static final String MET_CAMPUS = "Docent.metCampus";
 
 	public DocentenEntity(String voornaam, String familienaam, BigDecimal wedde,Geslacht geslacht, long rijksRegisterNr) {
@@ -191,6 +194,16 @@ public class DocentenEntity implements Serializable {
 	public void removeBijnaam(String bijnaam){
 		bijnamen.remove(bijnaam);
 	}
+
+	@Version
+	public Timestamp getVersie() {
+		return versie;
+	}
+
+	public void setVersie(Timestamp versie) {
+		this.versie = versie;
+	}
+
 
 	@Override
 	public boolean equals(Object o) {

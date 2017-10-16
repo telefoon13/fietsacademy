@@ -3,11 +3,14 @@ package be.vdab.services;
 import be.vdab.entities.CampussenEntity;
 import be.vdab.entities.DocentenEntity;
 import be.vdab.exceptions.DocentBestaadAlException;
+import be.vdab.exceptions.RecordAangepastException;
 import be.vdab.repositories.CampusRepository;
 import be.vdab.repositories.DocentRepository;
 import be.vdab.valueobjects.AantalDocentenPerWedde;
 import be.vdab.valueobjects.VoornaamEnID;
 
+import javax.persistence.OptimisticLockException;
+import javax.persistence.RollbackException;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -16,8 +19,14 @@ public class DocentService extends AbstractService {
 	private final DocentRepository docentRepository = new DocentRepository();
 	private final CampusRepository campusRepository = new CampusRepository();
 
+	//Standaard
+//	public Optional<DocentenEntity> read(long id){
+//		return docentRepository.read(id);
+//	}
+
+	//With Lock
 	public Optional<DocentenEntity> read(long id){
-		return docentRepository.read(id);
+		return docentRepository.readWithLock(id);
 	}
 
 	public void create(DocentenEntity docent){
@@ -50,6 +59,10 @@ public class DocentService extends AbstractService {
 		try {
 			docentRepository.read(id).ifPresent(docent -> docent.opslag(percent));
 			commit();
+		} catch (RollbackException ex) {
+			if (ex.getCause() instanceof OptimisticLockException){
+				throw new RecordAangepastException();
+			}
 		} catch (RuntimeException ex){
 			rollback();
 			throw ex;
